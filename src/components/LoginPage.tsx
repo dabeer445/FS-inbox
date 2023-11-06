@@ -17,15 +17,11 @@ export function LoginPage({
 }: LoginPageProps) {
   const [userName, setUserName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  // const [userBotpressToken] = useState<string>(
-  //   "bp_pat_Jc0UIZ7XbrrVEXPJh4uq2UC7tJ7Ll7ZyxnHx"
-  // );
   const [userBotpressToken] = useState<string>(
-    process.env.PAT
+    import.meta.env.VITE_BP_PAT
   );
-  
   const [userBotpressURL] = useState<string>(
-    "https://app.botpress.cloud/workspaces/55c4b51d-a06e-4b67-8e8e-4d328a5938a1/chatbots/a120a137-d86c-4e2a-9bf1-de02c43f1101/general"
+    import.meta.env.VITE_BP_URL
   );
 
   const { createClient } = useBotpressClient();
@@ -36,7 +32,7 @@ export function LoginPage({
       return;
     }
 
-    if (userName.trim() !== process.env.USER || password.trim() !== process.env.KEY) {
+    if (userName.trim() !== import.meta.env.VITE_USER || password.trim() !== import.meta.env.VITE_KEY) {
       toast.error("Please input the correct credentials");
       setUserName("");
       setPassword("");

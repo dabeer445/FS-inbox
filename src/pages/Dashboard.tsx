@@ -4,7 +4,7 @@ import { Conversation, Message } from "@botpress/client";
 import { ConversationDetails } from "../components/ConversationDetails";
 import { ConversationList } from "../components/ConversationList";
 import { Header } from "../components/interface/Header";
-import { listConversationsWithMessages } from "../hooks/clientFunctions";
+import { listConversationsWithMessages, getConversationById } from "../hooks/clientFunctions";
 import { LoadingAnimation } from "../components/interface/Loading";
 import { LoginPage } from "../components/LoginPage";
 import { useBotpressClient } from "../hooks/botpressClient";
@@ -115,6 +115,7 @@ export const Dashboard = () => {
           const currentURL = new URL(window.location.href);
           const searchParams = currentURL.searchParams;
           const conversationId = searchParams.get("convoId");
+
           if (conversationId && convoList.length > 0) {
             let foundConvo: any = convoList.find(
               (convo: any) => convo.id === conversationId
@@ -123,8 +124,15 @@ export const Dashboard = () => {
             if (foundConvo) {
               setSelectedConversation(foundConvo);
             } else {
-              console.log("doesnt exist");
-              searchParams.delete("convoId");
+              const conv = await getConversationById(botpressClient, conversationId);
+              if(conv?.id){
+                convoList.push(conv);
+                setSelectedConversation(conv);
+              }else{
+
+                console.log("doesnt exist");
+                searchParams.delete("convoId");
+              }
             }
           }
         }

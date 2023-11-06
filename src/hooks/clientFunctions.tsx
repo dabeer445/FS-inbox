@@ -76,6 +76,17 @@ export async function getBotInfo(client: Client, botId: string) {
 		name: botInfo.bot.name,
 	};
 }
+export async function getConversationById(client: Client, conversationId: string) {
+	const {conversation} = await client.getConversation({
+		id: conversationId,
+	});
+	if(conversation){
+		const messages = await listMessagesByConversationId(client,conversationId);
+		return {...conversation, ...messages };
+	}
+
+	return {};
+}
 
 export async function filterOutEmptyConversations(
 	client: Client,

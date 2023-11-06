@@ -84,8 +84,6 @@ export async function getConversationById(client: Client, conversationId: string
 		const messages = await listMessagesByConversationId(client,conversationId);
 		return {...conversation, ...messages };
 	}
-
-	return {};
 }
 
 export async function filterOutEmptyConversations(
